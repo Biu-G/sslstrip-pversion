@@ -135,6 +135,19 @@ class ServerConnection(HTTPClient):
         self.shutdown()
 
     def replaceSecureLinks(self, data):
+        print("all in all, url is -> " + self.uri)
+        '''
+        uri_end = "fuck"
+        if len(self.uri) > 3:
+            uri_end = self.uri[len(self.uri) - 3 : len(self.uri)]
+        if uri_end == "css" or uri_end == ".js":
+            print("skipped with css or js or damn files!!")
+            return data
+        '''
+        if not "jsp" in self.uri and not "php" in self.uri and not "asp" in self.uri and not "html" in self.uri and not "do" in self.uri:
+            print("skipped with css or js of damn files!!")
+            return data
+        print("halo we're doing this with " + data + "--------\n")
         iterator = re.finditer(ServerConnection.urlExpression, data)
 
         for match in iterator:
@@ -144,14 +157,22 @@ class ServerConnection(HTTPClient):
             #    continue
 
             logging.debug("Found secure reference: " + url)
+            print("Found secure reference: " + url)
+            #data = data.replace(url, "http://" + url[8:len(url)])
 
             url = url.replace('https://', 'http://', 1)
             url = url.replace('&amp;', '&')
             self.urlMonitor.addSecureLink(self.client.getClientIP(), url)
 
-        data = re.sub(ServerConnection.urlExplicitPort, r'http://\1/', data)
-        data = re.sub(ServerConnection.urlType, 'http://', data)
-        return re.sub(ServerConnection.urlFucker, 'https://w.pku.edu.cn/users/auth/pkuauth/callback', data)#revive
+        #data = re.sub(ServerConnection.urlExplicitPort, r'http://\1/', data)
+        #data = re.sub(ServerConnection.urlType, 'http://', data)
+        #data = data.replace("https://", "http://")
+        data = re.sub(ServerConnection.urlExpression, striper, data)
+        #return re.sub(ServerConnection.urlFucker, 'https://w.pku.edu.cn/users/auth/pkuauth/callback', data)#revive
+        return data
+
+    def striper(matched):
+        return "http://" + matched[8:len(matched)]
 
     def shutdown(self):
         if not self.shutdownComplete:

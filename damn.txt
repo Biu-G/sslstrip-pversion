@@ -1,0 +1,57 @@
+
+sslstrip 0.9 by Moxie Marlinspike running...
+halo we're doing this with 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<style type="text/css"> 
+#loader_container { 
+	text-align:center; 
+	position:fixed; 
+	top:300px; 
+	left:0; 
+	width:100%; 
+	z-index:10000; 
+	filter:alpha(opacity=85); 
+	-moz-opacity:0.85; 
+	opacity:0.85; 
+} 
+* html #loader_container { 
+	position:absolute; 
+} 
+#loader { 
+	font-family:Tahoma, Helvetica, sans; 
+	font-size:12px; 
+	color:#004a8f; 
+	background-color:#ecf5ff; 
+	display:block; 
+	width:200px; 
+	border:1px solid #81b9ff; 
+	text-align:left; 
+	margin:0 auto; 
+	padding:5px 0; 
+} 
+#loader div { 
+	margin: 4px 0; 
+} 
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>统一认证</title>
+<script type="text/javascript" language="javascript">
+	function redirect(){
+		var addr = window.location.href;
+			window.location.href="https://iaaa.pku.edu.cn/iaaa/oauth.jsp?appID=syllabus&appName=学生选课系统"+
+"&redirectUrl=http://elective.pku.edu.cn:80/elective2008/ssoLogin.do";	
+}
+</script>
+</head>
+<body onload="redirect()">
+<div id="loader_container">
+<div id="loader">
+<div align="center">正在转向北京大学IAAA身份认证</div>
+</div></div>
+</body>
+</html>
+--------
+
+Found secure reference: https://iaaa.pku.edu.cn/iaaa/oauth.jsp?appID=syllabus&appName=
