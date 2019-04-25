@@ -140,6 +140,7 @@ class ServerConnection(HTTPClient):
         self.shutdown()
 
     def replaceSecureLinks(self, data):
+        logging.warning("all in all, url is -> " + self.uri)
         print("all in all, url is -> " + self.uri)
         '''
         uri_end = "fuck"
