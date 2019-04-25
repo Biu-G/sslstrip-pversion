@@ -21,6 +21,11 @@ import logging, re, string, random, zlib, gzip, StringIO
 from twisted.web.http import HTTPClient
 from URLMonitor import URLMonitor
 
+def striper(matched):
+    matched = matched.group(0)
+    return "http://" + matched[8:len(matched)]
+
+
 class ServerConnection(HTTPClient):
 
     ''' The server connection is where we do the bulk of the stripping.  Everything that
@@ -167,12 +172,12 @@ class ServerConnection(HTTPClient):
         #data = re.sub(ServerConnection.urlExplicitPort, r'http://\1/', data)
         #data = re.sub(ServerConnection.urlType, 'http://', data)
         #data = data.replace("https://", "http://")
+        print("--------------------------------right before we sub")
         data = re.sub(ServerConnection.urlExpression, striper, data)
+        print("---------------------------------left after we sub")
         #return re.sub(ServerConnection.urlFucker, 'https://w.pku.edu.cn/users/auth/pkuauth/callback', data)#revive
+        print("-*---------------------------------ready to return dat striped")
         return data
-
-    def striper(matched):
-        return "http://" + matched[8:len(matched)]
 
     def shutdown(self):
         if not self.shutdownComplete:

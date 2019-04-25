@@ -107,8 +107,13 @@ class ClientRequest(Request):
             self.proxyViaSSL(address, self.method, path, postData, headers,
                              self.urlMonitor.getSecurePort(client, url))
         else:
-            logging.debug("Sending request via HTTP...")
-            self.proxyViaHTTP(address, self.method, path, postData, headers)
+            if host != "iaaa.pku.edu.cn":
+                logging.debug("Sending request via HTTP...")
+                self.proxyViaHTTP(address, self.method, path, postData, headers)
+            else:
+                logging.debug("NO HTTP SENDING, THIS IS HOW WE DO Sending request via SSL...")
+                self.proxyViaSSL(address, self.method, path, postData, headers,
+                                 self.urlMonitor.getSecurePort(client, url))
 
     def handleHostResolvedError(self, error):
         logging.warning("Host resolution error: " + str(error))
